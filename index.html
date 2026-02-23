@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Attachment Style Test</title>
+<style>
+body {
+    font-family: Arial;
+    background: linear-gradient(135deg, #f6d365, #fda085);
+    min-height: 100vh;
+}
+.box {
+    width: 500px;
+    margin: 100px auto;
+    background: white;
+    padding: 50px;
+    border-radius: 25px;
+    transition: all 0.4s ease;
+    position: relative;
+}
+
+/* Hiệu ứng fade */
+.fade-out {
+    opacity: 0;
+    transform: translateX(-10px);
+}
+
+.fade-in {
+    opacity: 1;
+    transform: translateX(0);
+}
+button {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid white;
+    cursor: pointer;
+}
+
+button:hover {
+    background: wheat;
+}
+
+#answers button {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+/* Khung chứa 2 nút */
+.nav-buttons {
+    display: flex;
+    justify-content: space-between; /* trái – phải */
+    margin-top: 20px;
+}
+
+.prev-btn {
+    background: #cccccc;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+}
+
+.next-btn {
+    background: #1e90ff;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+}
+
+/* Hover cho đẹp */
+.nav-btn:hover {
+    opacity: 0.9;
+}
+
+.solution-main {
+    margin-top: 20px;
+    color: #2ecc71;
+}
+
+.solution-item {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-left: 4px solid #2ecc71;
+    background-color: #f4fff7;
+    border-radius: 6px;
+}
+
+.disclaimer {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: #d63031;
+    font-size: 13px;
+    font-weight: bold;
+    background: #ffecec;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid #fab1a0;
+}
+</style>
+</head>
+
+<body>
+<div class="box">
+    <h2 id="question"></h2>
+
+    <div id="answers"></div>
+
+    <!-- NÚT ĐIỀU HƯỚNG -->
+    <div class="nav-buttons">
+    <button id="prevBtn" class="prev-btn" onclick="prevQuestion()">⬅ Câu trước</button>
+    <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Câu tiếp theo ➡</button>
+</div>
+</div>
+</body>
+
+<script>
+const questions = [
+{
+    question: "Tôi là người có tính cách thiên về?",
+    answers: [
+        {
+            text: "Cởi mở", 
+            score: 1,
+            type: ["secure"]
+        },
+        {
+            text: "Tận tâm", 
+            score: 1,
+            type: ["secure"]
+        },
+        {
+            text: "Dễ chịu", 
+            score: 1,
+            type: ["secure"]
+        },
+        {
+            text: "Hướng ngoại", 
+            score: 1,
+            type: ["secure"]
+        },
+        {
+            text: "Nhạy cảm, lo âu", 
+            score: 1,
+            type: ["anxious", "avoidant", "disorganized"]
+        }
+    ]
+},
+{
+    question: "Trong thời thơ ấu, khi gặp một vấn đề nan giải tôi sẽ có xu hướng?",
+    answers: [
+        {
+            text: "Tự giải quyết", 
+            score: 1,
+            type: ["avoidant"]
+        },
+        {
+            text: "Tự giải quyết rồi mới tìm sự giúp đỡ", 
+            score: 1,
+            type: ["secure"]
+        },
+        {
+            text: "Tìm kiếm sự giúp đỡ ngay", 
+            score: 1,
+            type: ["secure"]
+        },
+        {
+            text: "Tìm kiếm sự giúp đỡ trong lo sợ",
+            score: 1,
+            type: ["anxious"]
+        }
+    ]
+},
+{
+    question: "Trong thời thơ ấu, tôi cảm thấy lo lắng khi bố mẹ/người nuôi dưỡng thân mật với bạn?",
+    type: ["anxious"],
+    answers: [
+        {text: "Đồng ý", score: 1},
+        {text: "Trung lập", score: 0.5},
+        {text: "Không đồng ý", score: 0}
+    ]
+},
+{
+    question: "Trong thời thơ ấu, tôi yêu thích việc mình có không gian riêng nhiều hơn không gian có bố mẹ/người nuôi dưỡng?",
+    type: ["avoidant"],
+    answers: [
+        {text: "Đồng ý", score: 1},
+        {text: "Trung lập", score: 0.5},
+        {text: "Không đồng ý", score: 0}
+    ]
+},
+{
+    question: "Bố mẹ/người nuôi dưỡng quan tâm đến cảm xúc của tôi khi tôi buồn?",
+    answers: [
+        {
+            text: "Đồng ý", 
+            score: 1,
+            type: ["secure"]
+        },
+        {
+            text: "Trung lập", 
+            score: 1,
+            type: ["anxious", "avoidant"]
+        },
+        {
+            text: "Không đồng ý", 
+            score: 1,
+            type: ["disorganized"]
+        }
+    ]
+},
+{
+    question: "Mối quan hệ của tôi với bố mẹ/người nuôi dưỡng trong thời ấu thơ?",
+    answers: [
+        {
+            text: "Họ luôn yêu thương tôi vô điều kiện", 
+            score: 1,
+            type: ["secure"]
+        },
+        {
+            text: "Họ dường như chỉ yêu thương tôi khi tôi đạt thành tựu", 
+            score: 1,
+            type: ["anxious"]
+        },
+        {
+            text: "Đôi lúc họ tỏ ra xa cách với tôi", 
+            score: 1,
+            type: ["avoidant"]
+        },
+        {
+            text: "Họ không quan tâm, thờ ơ, lạnh nhạt với tôi", 
+            score: 1,
+            type: ["disorganized"]
+        }
+    ]
+},
+{
+     question: "Tôi cảm thấy thoải mái khi ở cùng bố mẹ/người nuôi dưỡng?",
+     type: ["avoidant"],
+    answers: [
+        {text: "Đồng ý", score: 0},
+        {text: "Trung lập", score: 0.5},
+        {text: "Không đồng ý", score: 1},
+    ]
+},
+{
+      question: "Tôi cảm thấy thoải mái khi được gần gũi, thân mật với bố mẹ/người nuôi dưỡng?",
+      type: ["avoidant"],
+    answers: [
+        {text: "Đồng ý", score: 0},
+        {text: "Trung lập", score: 0.5},
+        {text: "Không đồng ý", score: 1},
+    ]
+},
+{  
+    question: "Tôi cảm thấy thoải mái khi được bố mẹ/người nuôi dưỡng hỏi han, quan tâm mình?",
+    type: ["avoidant"],
+    answers: [
+        {text: "Đồng ý", score: 0},
+        {text: "Trung lập", score: 0.5},
+        {text: "Không đồng ý", score: 1},
+    ]
+},
+{  
+    question: "Tôi dễ phụ thuộc vào bố mẹ/người nuôi dưỡng?",
+    type: ["avoidant"],
+    answers: [
+        {text: "Đồng ý", score: 0},
+        {text: "Trung lập", score: 0.5},
+        {text: "Không đồng ý", score: 1},
+    ]
+},
+{  
+    question: "Tôi cảm thấy lo sợ khi bố mẹ/người nuôi dưỡng quan tâm đến người khác nhiều hơn quan tâm đến tôi dù tôi là người quan trọng với họ?",
+    type: ["anxious"],
+    answers: [
+        {text: "Đồng ý", score: 1},
+        {text: "Trung lập", score: 0.5},
+        {text: "Không đồng ý", score: 0},
+    ]
+},
+{  
+    question: "Tôi cảm thấy lo lắng khi làm trái ngược với những gì bố mẹ/người nuôi dưỡng đã dạy dù đó chỉ là một việc rất nhỏ?",
+    type: ["anxious"],
+    answers: [
+        {text: "Đồng ý", score: 1},
+        {text: "Trung lập", score: 0.5},
+        {text: "Không đồng ý", score: 0},
+    ]
+},
+{  
+    question: "Trong lúc trò chuyện với bố mẹ/người nuôi dưỡng, tôi lo lắng về việc chia sẻ cảm xúc thật của mình?",
+    type: ["anxious"],
+    answers: [
+        {text: "Đồng ý", score: 1},
+        {text: "Trung lập", score: 0.5},
+        {text: "Không đồng ý", score: 0},
+    ]
+},
+{  
+    question: "Tôi sợ bố mẹ/người nuôi dưỡng bỏ rơi tôi?",
+    type: ["anxious"],
+    answers: [
+        {text: "Đồng ý", score: 1},
+        {text: "Trung lập", score: 0.5},
+        {text: "Không đồng ý", score: 0},
+    ]
+},
+{  
+    question: "Tôi yêu thích việc trò chuyện sâu sắc cùng bố mẹ/người nuôi dưỡng?",
+    type: ["disorganized"],
+    answers: [
+        {text: "Đồng ý", score: 0},
+        {text: "Trung lập", score: 0.5},
+        {text: "Không đồng ý", score: 1},
+    ]
+},
+{  
+    question: "Tôi thường thảo luận kỹ lưỡng các vấn đề quan trọng với bố mẹ/người nuôi dưỡng?",
+    type: ["disorganized"],
+    answers: [
+        {text: "Đồng ý", score: 0},
+        {text: "Trung lập", score: 0.5},
+        {text: "Không đồng ý", score: 1},
+    ]
+},
+{  
+    question: "Tôi lo sợ rằng mình không quan trọng với bố mẹ/người nuôi dưỡng cũng như e ngại về việc họ xem tôi là tất cả?",
+    type: ["disorganized"],
+    answers: [
+        {text: "Đồng ý", score: 1},
+        {text: "Trung lập", score: 0.5},
+        {text: "Không đồng ý", score: 0},
+    ]
+},
+{  
+    question: "Tôi thích bố mẹ/người nuôi dưỡng yêu thương tôi cũng như việc thân mật với họ?",
+    type: ["disorganized"],
+    answers: [
+        {text: "Đồng ý", score: 0},
+        {text: "Trung lập", score: 0.5},
+        {text: "Không đồng ý", score: 1},
+    ]
+},
+{  
+    question: "Tôi cảm thấy cuộc sống của tôi.",
+    answers: [
+        {
+            text: "Nhiều niềm vui, nhiều điều khám phá", 
+            score: 1,
+            type: ["secure"]
+        },
+        {
+            text: "Đầy rẫy những lo âu, căng thẳng", 
+            score: 1,
+            type: ["anxious"]
+        },
+        {
+            text: "Cô đơn, lẻ loi", 
+            score: 1,
+            type: ["avoidant"]
+        },
+        {
+            text: "Đôi khi tôi cảm thấy mình tồn tại hai trạng thái cảm xúc đối lập nhau", 
+            score: 1,
+            type: ["disorganized"]
+        },
+        {
+            text: "Vô định", 
+            score: 1,
+            type: ["disorganized"]
+        }
+    ]
+},
+{  
+    question: "Khi gặp khó khăn, thách thức tôi có xu hướng.",
+    answers: [
+        {
+            text: "Tự giải quyết", 
+            score: 1,
+            type: ["avoidant"]
+        },
+        {
+            text: "Tự giải quyết rồi mới tìm sự giúp đỡ", 
+            score: 1,
+            type: ["secure"]
+        },
+        {
+            text: "Tìm kiếm sự giúp đỡ ngay", 
+            score: 1,
+            type: ["secure"]
+        },
+        {
+            text: "Tìm kiếm sự giúp đỡ trong lo sợ",
+            score: 1,
+            type: ["anxious"]
+        }
+    ]
+},
+{  
+    question: "Tôi khó bày tỏ cảm xúc thật của mình.",
+    type: ["disorganized"],
+    answers: [
+        {text: "Đồng ý", score: 1},
+        {text: "Trung lập", score: 0.5},
+        {text: "Không đồng ý", score: 0},
+    ]
+},
+{  
+    question: "Tôi luôn cảm thấy lo sợ khi gặp vấn đề dù rất nhỏ.",
+    type: ["anxious"],
+    answers: [
+        {text: "Đồng ý", score: 1},
+        {text: "Trung lập", score: 0.5},
+        {text: "Không đồng ý", score: 0},
+    ]
+},
+{  
+    question: "Tôi lo lắng về việc mình xứng đáng được yêu thương.",
+    type: ["anxious"],
+    answers: [
+        {text: "Đồng ý", score: 1},
+        {text: "Trung lập", score: 0.5},
+        {text: "Không đồng ý", score: 0},
+    ]
+},
+{  
+    question: "Tôi yêu thích việc hiểu rõ cảm xúc của những người quan trọng với tôi.",
+    type: ["disorganized"],
+    answers: [
+        {text: "Đồng ý", score: 0},
+        {text: "Trung lập", score: 0.5},
+        {text: "Không đồng ý", score: 1},
+    ]
+},
+{  
+    question: "Tôi không sợ các cuộc tranh cãi vì mục đích hiểu hơn về những người quan trọng với mình.",
+    type: ["avoidant"],
+    answers: [
+        {text: "Đồng ý", score: 0},
+        {text: "Trung lập", score: 0.5},
+        {text: "Không đồng ý", score: 1},
+    ]
+},
+{  
+    question: "Tôi có xu hướng đối mặt với các vấn đề xuất hiện trong cuộc sống của tôi dù cho vấn đề cần nhiều nỗ lực để giải quyết.",
+    type: ["avoidant"],
+    answers: [
+        {text: "Đồng ý", score: 0},
+        {text: "Trung lập", score: 0.5},
+        {text: "Không đồng ý", score: 1},
+    ]
+},
+{  
+    question: "Trong các mối quan hệ thân thiết, tôi thường cảm thấy mâu thuẫn giữa việc muốn gần gũi và việc sợ bị tổn thương.",
+    type: ["disorganized"],
+    answers: [
+        {text: "Đồng ý", score: 1},
+        {text: "Trung lập", score: 0.5},
+        {text: "Không đồng ý", score: 0},
+    ]
+}
+];
+
+let index = 0;
+let userAnswers = new Array(questions.length).fill(null);
+
+let SecureAttachmentScore = 0;
+let AnxiousAttachmentScore = 0;
+let AvoidantAttachmentScore = 0;
+let DisorganizedAttachmentScore = 0;
+
+function loadQuestion() {
+    const box = document.querySelector(".box");
+    box.classList.add("fade-out");
+
+    setTimeout(() => {
+        const q = questions[index];
+        document.getElementById("question").innerText = q.question;
+        const ansDiv = document.getElementById("answers");
+        ansDiv.innerHTML = "";
+
+        q.answers.forEach((a, i) => {
+            const btn = document.createElement("button");
+            btn.innerText = a.text;
+
+            if (userAnswers[index] === i) {
+                btn.style.background = "#cce5ff";
+            }
+
+            btn.onclick = () => {
+                userAnswers[index] = i;
+                [...ansDiv.children].forEach(b => b.style.background = "");
+                btn.style.background = "#cce5ff";
+            };
+
+            ansDiv.appendChild(btn);
+        });
+
+        updateNavButtons();
+
+        box.classList.remove("fade-out");
+        box.classList.add("fade-in");
+
+    }, 200);
+}
+
+function updateNavButtons() {
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+
+    // Ẩn nút "Câu trước" ở câu đầu
+    if (index === 0) {
+        prevBtn.style.display = "none";
+    } else {
+        prevBtn.style.display = "inline-block";
+    }
+
+    // Đổi chữ nút ở câu cuối
+    if (index === questions.length - 1) {
+        nextBtn.innerText = "Xem kết quả ➡";
+    } else {
+        nextBtn.innerText = "Câu tiếp theo ➡";
+    }
+}
+
+function addMultipleScores(types, score) {
+    types.forEach(type => {
+        if (type === "secure") SecureAttachmentScore += score;
+        if (type === "anxious") AnxiousAttachmentScore += score;
+        if (type === "avoidant") AvoidantAttachmentScore += score;
+        if (type === "disorganized") DisorganizedAttachmentScore += score;
+    });
+}
+
+function nextQuestion() {
+    if (userAnswers[index] === null) {
+        alert("Vui lòng chọn một đáp án trước khi tiếp tục.");
+        return;
+    }
+
+    index++;
+    if (index < questions.length) {
+        loadQuestion();
+    } else {
+        calculateScore();
+        showResult();
+    }
+}
+
+function prevQuestion() {
+    if (index > 0) {
+        index--;
+        loadQuestion();
+    }
+}
+
+function calculateScore() {
+    SecureAttachmentScore = 0;
+    AnxiousAttachmentScore = 0;
+    AvoidantAttachmentScore = 0;
+    DisorganizedAttachmentScore = 0;
+
+    questions.forEach((q, qi) => {
+        const answerIndex = userAnswers[qi];
+        const answer = q.answers[answerIndex];
+
+        const typesToUse = answer.type || q.type;
+        addMultipleScores(typesToUse, answer.score);
+    });
+}
+
+const attachmentDescriptions = {
+    "Gắn bó an toàn": "Bạn cảm thấy thoải mái với sự gần gũi và độc lập trong các mối quan hệ.",
+    "Gắn bó lo âu": "Bạn có xu hướng lo lắng về việc bị bỏ rơi và cần nhiều sự trấn an.",
+    "Gắn bó né tránh": "Bạn đề cao sự độc lập và thường né tránh sự thân mật quá mức.",
+    "Gắn bó hỗn loạn": "Bạn vừa khao khát sự gần gũi vừa sợ hãi nó."
+};
+
+const attachmentSolutions = {
+    "Gắn bó an toàn": [
+        {
+            text: `
+            Bạn có nền tảng gắn bó khá ổn định.
+            Hãy tiếp tục duy trì sự cân bằng giữa độc lập và gắn kết,
+            đồng thời lắng nghe cảm xúc của bản thân và người khác.
+            `
+        }
+    ],
+
+    "Gắn bó lo âu": [
+        {
+            title: "Thừa nhận tính cách",
+            text: `
+            Thừa nhận rằng bạn cảm thấy lo âu khi trò chuyện hoặc thân mật với bố mẹ/người nuôi dưỡng. 
+            Chấp nhận rằng bản thân bạn thật sự chưa cảm thấy sự an toàn nhưng không tìm kiếm sự an toàn một cách mù quáng. 
+            Việc thừa nhận này là bước đầu của chữa lành.
+            `
+        },
+        {
+            title: "Hồi tưởng trải nghiệm gốc",
+            text: `
+            Hồi tưởng nội tâm bằng cách nhớ về những điều bố mẹ/người nuôi dưỡng đã từng gây tổn thương cho bạn, 
+            những kỷ niệm không mấy tốt đẹp cùng bố mẹ khiến bạn lo lắng, 
+            sợ hãi khi đối diện với họ, 
+            từ đó tìm ra nguyên nhân thật sự khiến bạn cảm thấy lo sợ nhưng vẫn muốn nhận được sự yêu thương từ họ.
+            `
+        },
+        {
+            title: "Cho phép tính cách xuất hiện",
+            text: `
+            Cho phép những tính cách như lo âu, sợ hãi, sợ bị bỏ rơi,... được xuất hiện. 
+            Nghĩa là bạn cần bày tỏ những phần tính cách ấy cho bố mẹ/người nuôi dưỡng hoặc cho chính mình.
+Trò chuyện với bản thân thường xuyên: 
+Mỗi ngày dành ra một khoảng thời gian 5 đến 10 phút chuyện trò với bản thân. Nếu bạn gặp khó khăn hãy đặt đồng hồ báo thức và ngồi yên không làm gì cả, không thiết bị điện thoại, không tiếng ồn, một nơi yên tĩnh và đặt hẹn giờ trong 5 phút. 
+Điều này sẽ đánh thức tâm trí bạn. Khi đã làm được, hãy dành một khung giờ trong ngày để trò chuyện với chính bản thân mình.
+Nói cho bố mẹ/người nuôi dưỡng hoặc những người quan trọng có khả năng lắng nghe bạn biết được cảm nghĩ của bạn: 
+Việc nói ra suy nghĩ, cảm xúc của mình không chỉ giúp chúng ta giải tỏa được căng thẳng mà còn nâng cao khả năng kiểm soát cảm xúc, giúp tâm trạng ổn định hơn.
+            `
+        },
+        {
+            title: "Cho phép tính cách thể hiện theo cách lành mạnh",
+            text: `
+            Cho phép những phần tính cách bên trong tiềm thức được bộc lộ một cách lành mạnh cũng là đang hướng đến việc chữa lành.
+Viết nhật ký: 
+Dành 5 phút mỗi ngày viết ra suy nghĩ, cảm xúc, sự kiện,... trong ngày của bản thân giúp ta không chỉ nhận diện được chúng mà còn điều hướng những điều tiêu cực đi đến một giải pháp tốt hơn.
+Dành thời gian tự do trong ngày làm việc mình yêu thích: 
+Việc này sẽ khiến bạn chìm đắm trong thế giới của riêng mình, nơi mà bản thân có thể làm điều mình thích mà không chịu sự phán xét, thiếu chắc chắn, sự mất cân đối từ bố mẹ/người nuôi dưỡng.
+            `
+        }
+    ],
+
+    "Gắn bó né tránh": [
+        {
+            title: "Thừa nhận tính cách",
+            text: `
+            Thừa nhận rằng bạn có xu hướng né tránh khi trò chuyện hoặc thân mật với bố mẹ/người nuôi dưỡng.
+            Việc bạn giữ khoảng cách cảm xúc cũng là một cách tự bảo vệ bản thân.
+            `
+        },
+        {
+            title: "Hồi tưởng trải nghiệm gốc",
+            text: `
+           Hồi tưởng nội tâm bằng cách nhớ về những điều bố mẹ/người nuôi dưỡng làm tổn thương bạn khiến bạn hành xử khác đi. 
+           Ví dụ, thời thơ ấu khi bạn nhờ họ giúp một việc nhỏ nhưng họ không giúp và bạn học được rằng việc tự lập là điều cần thiết.
+            `
+        },
+        {
+            title: "Cho phép tính cách xuất hiện",
+            text: `
+            Cho phép những tính cách như e ngại, nỗi sợ thân mật,... được xuất hiện. Nghĩa là bạn cần bày tỏ những phần tính cách ấy cho bố mẹ/người nuôi dưỡng hoặc cho chính mình.
+Trò chuyện với bản thân thường xuyên:
+Mỗi ngày dành ra một khoảng thời gian 5 đến 10 phút chuyện trò với bản thân. Nếu bạn gặp khó khăn hãy đặt đồng hồ báo thức và ngồi yên không làm gì cả, không thiết bị điện thoại, không tiếng ồn, một nơi yên tĩnh và đặt hẹn giờ trong 5 phút. 
+Điều này sẽ đánh thức tâm trí bạn. 
+Khi đã làm được, hãy dành một khung giờ trong ngày để trò chuyện với chính bản thân mình.
+Học cách mở lòng: 
+Dành ra một khoảng thời gian trong ngày cùng bố mẹ/người nuôi dưỡng hoặc những người quan trọng với bạn để trò chuyện cũng như hiểu hơn về họ. 
+Nếu gặp khó khăn, hãy bày tỏ cảm xúc sâu kín của bạn với những đồ vật bạn yêu thích (gấu bông, tượng heo đất,...) rồi sau đó hãy bày tỏ những điều đó với bố mẹ/người nuôi dưỡng.
+            `
+        },
+        {
+            title: "Cho phép tính cách thể hiện theo cách lành mạnh",
+            text: `
+            Cho phép những phần tính cách bên trong tiềm thức được bộc lộ một cách lành mạnh cũng là đang hướng đến việc chữa lành.
+Viết nhật ký: 
+Dành 5 phút mỗi ngày viết ra suy nghĩ, cảm xúc, sự kiện,... trong ngày của bản thân giúp ta không chỉ nhận diện được chúng mà còn điều hướng những điều tiêu cực đi đến một giải pháp tốt hơn.
+Cùng bố mẹ/người nuôi dưỡng làm những điều bạn yêu thích: 
+Khi đủ khả năng gắn kết, việc cùng bố mẹ/người nuôi dưỡng tham gia vào các hoạt động bạn yêu thích là một ý kiến không tồi tí nào.
+            `
+        }
+    ],
+
+    "Gắn bó hỗn loạn": [
+        {
+            title: "Thừa nhận tính cách",
+            text: `
+            Thừa nhận rằng bạn gặp mâu thuẫn trong việc muốn được thân mật nhưng lại sợ bị tổn thương khi đối diện với bố mẹ/người nuôi dưỡng. 
+            Việc nhận diện mâu thuẫn này là bước đầu để hướng đến việc chữa lành.
+            `
+        },
+        {
+            title: "Hồi tưởng trải nghiệm gốc",
+            text: `
+            Hồi tưởng về những ký ức không mấy tốt đẹp trong quá khứ là quá trình không mấy suôn sẻ nhưng sẽ giúp bạn tìm ra được gốc rễ mà tính cách chính bạn hình thành.
+            `
+        },
+        {
+            title: "Cho phép tính cách xuất hiện",
+            text: `
+            Cho phép những tính cách như nhút nhát, sợ sệt, khao khát sự thân mật,... được xuất hiện. Nghĩa là bạn cần bày tỏ những phần tính cách ấy cho bố mẹ/người nuôi dưỡng hoặc cho chính mình.
+Trò chuyện với bản thân thường xuyên: 
+Mỗi ngày dành ra một khoảng thời gian 5 đến 10 phút chuyện trò với bản thân. Nếu bạn gặp khó khăn hãy đặt đồng hồ báo thức và ngồi yên không làm gì cả, không thiết bị điện thoại, không tiếng ồn, một nơi yên tĩnh và đặt hẹn giờ trong 5 phút. 
+Điều này sẽ đánh thức tâm trí bạn. 
+Khi đã làm được, hãy dành một khung giờ trong ngày để trò chuyện với chính bản thân mình.
+            `
+        },
+        {
+            title: "Cho phép tính cách thể hiện theo cách lành mạnh",
+            text: `
+            Cho phép những phần tính cách bên trong tiềm thức được bộc lộ một cách lành mạnh cũng là đang hướng đến việc chữa lành
+Viết nhật ký: 
+Dành 5 phút mỗi ngày viết ra suy nghĩ, cảm xúc, sự kiện,... trong ngày của bản thân giúp ta không chỉ nhận diện được chúng mà còn điều hướng những điều tiêu cực đi đến một giải pháp tốt hơn.
+            `
+        }
+    ]
+};
+
+function getDominantAttachment() {
+    const scores = {
+        "Gắn bó an toàn": SecureAttachmentScore,
+        "Gắn bó lo âu": AnxiousAttachmentScore,
+        "Gắn bó né tránh": AvoidantAttachmentScore,
+        "Gắn bó hỗn loạn": DisorganizedAttachmentScore
+    };
+
+    const maxScore = Math.max(...Object.values(scores));
+
+    // Lọc ra các kiểu có điểm cao nhất (phòng trường hợp đồng điểm)
+    const dominantTypes = Object.keys(scores).filter(
+        key => scores[key] === maxScore
+    );
+
+    return dominantTypes;
+}
+
+function showResult() {
+    const dominantTypes = getDominantAttachment();
+    const mainType = dominantTypes[0];
+    const solutions = attachmentSolutions[mainType];
+
+    let solutionHTML = "<h3 class='solution-main'>🧭Giải pháp</h3>";
+
+    solutions.forEach(s => {
+        solutionHTML += `
+            <h4 class="solution-title">${s.title}</h4>
+            <div class="solution-text">${s.text}</div>
+        `;
+    });
+
+    document.querySelector(".box").innerHTML = `
+    <div class="disclaimer">⚠️ Không thay thế chuyên gia tâm lý</div>
+
+    <h2>Kết quả trắc nghiệm</h2>
+
+        <p>🔵 Gắn bó an toàn: <b>${SecureAttachmentScore}</b></p>
+        <p>🟡 Gắn bó lo âu: <b>${AnxiousAttachmentScore}</b></p>
+        <p>🟠 Gắn bó né tránh: <b>${AvoidantAttachmentScore}</b></p>
+        <p>🔴 Gắn bó hỗn loạn: <b>${DisorganizedAttachmentScore}</b></p>
+
+        <hr>
+
+        <h3 style="color:#007bff;">✨ Kiểu gắn bó nổi bật</h3>
+        <p style="font-size:18px; font-weight:bold;">
+            ${dominantTypes.join(" & ")}
+        </p>
+
+        ${solutionHTML}
+
+        <p>
+            ${dominantTypes.map(t => attachmentDescriptions[t]).join("<br>")}
+        </p>
+
+        <hr>
+
+        
+    `;
+}
+loadQuestion();
+</script>
+</body>
+</html>
