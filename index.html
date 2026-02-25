@@ -183,7 +183,7 @@ const questions = [
     ]
 },
 {
-    question: "Trong thời thơ ấu, tôi cảm thấy lo lắng khi bố mẹ/người nuôi dưỡng thân mật với bạn?",
+    question: "Trong thời thơ ấu, tôi cảm thấy lo lắng khi bố mẹ/người nuôi dưỡng thân mật với tôi?",
     type: ["anxious"],
     answers: [
         {text: "Đồng ý", score: 1},
@@ -265,11 +265,22 @@ const questions = [
 },
 {  
     question: "Tôi cảm thấy thoải mái khi được bố mẹ/người nuôi dưỡng hỏi han, quan tâm mình?",
-    type: ["avoidant"],
     answers: [
-        {text: "Đồng ý", score: 0},
-        {text: "Trung lập", score: 0.5},
-        {text: "Không đồng ý", score: 1},
+        {
+            text: "Đồng ý", 
+            score: 0,
+            tyle: ["secure"]
+        },
+        {
+            text: "Trung lập", 
+            score: 0.5,
+            type: ["avoidant"]
+        },
+        {
+            text: "Không đồng ý", 
+            score: 1,
+            type: ["avoidant"]
+        }
     ]
 },
 {  
@@ -292,20 +303,42 @@ const questions = [
 },
 {  
     question: "Tôi cảm thấy lo lắng khi làm trái ngược với những gì bố mẹ/người nuôi dưỡng đã dạy dù đó chỉ là một việc rất nhỏ?",
-    type: ["anxious"],
     answers: [
-        {text: "Đồng ý", score: 1},
-        {text: "Trung lập", score: 0.5},
-        {text: "Không đồng ý", score: 0},
+        {
+            text: "Đồng ý", 
+            score: 1,
+            type: ["anxious"]
+        },
+        {
+            text: "Trung lập", 
+            score: 0.5,
+            type: ["anxious"]
+        },
+        {
+            text: "Không đồng ý", 
+            score: 0,
+            tyle: ["secure"]
+        }
     ]
 },
 {  
     question: "Trong lúc trò chuyện với bố mẹ/người nuôi dưỡng, tôi lo lắng về việc chia sẻ cảm xúc thật của mình?",
-    type: ["anxious"],
     answers: [
-        {text: "Đồng ý", score: 1},
-        {text: "Trung lập", score: 0.5},
-        {text: "Không đồng ý", score: 0},
+        {
+            text: "Đồng ý", 
+            score: 1,
+            type: ["anxious"]
+        },
+        {
+            text: "Trung lập", 
+            score: 0.5,
+            type: ["anxious"]
+        },
+        {
+            ext: "Không đồng ý", 
+            score: 0,
+            tyle: ["secure"]
+        }
     ]
 },
 {  
@@ -346,11 +379,22 @@ const questions = [
 },
 {  
     question: "Tôi thích bố mẹ/người nuôi dưỡng yêu thương tôi cũng như việc thân mật với họ?",
-    type: ["disorganized"],
     answers: [
-        {text: "Đồng ý", score: 0},
-        {text: "Trung lập", score: 0.5},
-        {text: "Không đồng ý", score: 1},
+        {
+            text: "Đồng ý", 
+            score: 0,
+            tyle: ["secure"]
+        },
+        {
+            text: "Trung lập", 
+            score: 0.5,
+            type: ["disorganized"]
+        },
+        {
+            text: "Không đồng ý", 
+            score: 1, 
+            type: ["disorganized"]
+        }
     ]
 },
 {  
@@ -418,15 +462,6 @@ const questions = [
     ]
 },
 {  
-    question: "Tôi luôn cảm thấy lo sợ khi gặp vấn đề dù rất nhỏ.",
-    type: ["anxious"],
-    answers: [
-        {text: "Đồng ý", score: 1},
-        {text: "Trung lập", score: 0.5},
-        {text: "Không đồng ý", score: 0},
-    ]
-},
-{  
     question: "Tôi lo lắng về việc mình xứng đáng được yêu thương.",
     type: ["anxious"],
     answers: [
@@ -437,29 +472,43 @@ const questions = [
 },
 {  
     question: "Tôi yêu thích việc hiểu rõ cảm xúc của những người quan trọng với tôi.",
-    type: ["disorganized"],
     answers: [
-        {text: "Đồng ý", score: 0},
-        {text: "Trung lập", score: 0.5},
-        {text: "Không đồng ý", score: 1},
-    ]
-},
-{  
-    question: "Tôi không sợ các cuộc tranh cãi vì mục đích hiểu hơn về những người quan trọng với mình.",
-    type: ["avoidant"],
-    answers: [
-        {text: "Đồng ý", score: 0},
-        {text: "Trung lập", score: 0.5},
-        {text: "Không đồng ý", score: 1},
+        {
+            text: "Đồng ý", 
+            score: 0,
+            tyle: ["secure"]
+
+        },
+        {
+            text: "Trung lập", 
+            score: 0.5,
+            type: ["disorganized"]
+        },
+        {
+            text: "Không đồng ý", 
+            score: 1,
+            type: ["disorganized"]
+        }
     ]
 },
 {  
     question: "Tôi có xu hướng đối mặt với các vấn đề xuất hiện trong cuộc sống của tôi dù cho vấn đề cần nhiều nỗ lực để giải quyết.",
-    type: ["avoidant"],
     answers: [
-        {text: "Đồng ý", score: 0},
-        {text: "Trung lập", score: 0.5},
-        {text: "Không đồng ý", score: 1},
+        {
+            text: "Đồng ý", 
+            score: 0,
+            tyle: ["secure"]
+        },
+        {
+            text: "Trung lập", 
+            score: 0.5,
+            type: ["avoidant"]
+        },
+        {
+            text: "Không đồng ý", 
+            score: 1,
+            type: ["avoidant"]
+        }
     ]
 },
 {  
@@ -699,18 +748,27 @@ Khi đủ khả năng gắn kết, việc cùng bố mẹ/người nuôi dưỡn
             title: "Cho phép tính cách xuất hiện",
             text: `
             Cho phép những tính cách như nhút nhát, sợ sệt, khao khát sự thân mật,... được xuất hiện. Nghĩa là bạn cần bày tỏ những phần tính cách ấy cho bố mẹ/người nuôi dưỡng hoặc cho chính mình.
-Trò chuyện với bản thân thường xuyên: 
+Trò chuyện với bản thân thường xuyên.
 Mỗi ngày dành ra một khoảng thời gian 5 đến 10 phút chuyện trò với bản thân. Nếu bạn gặp khó khăn hãy đặt đồng hồ báo thức và ngồi yên không làm gì cả, không thiết bị điện thoại, không tiếng ồn, một nơi yên tĩnh và đặt hẹn giờ trong 5 phút. 
 Điều này sẽ đánh thức tâm trí bạn. 
 Khi đã làm được, hãy dành một khung giờ trong ngày để trò chuyện với chính bản thân mình.
+Học cách đối xử tốt với chính mình khi những cảm xúc sâu trong tiềm thức.
+Học cách khoan dung với chính mình là một quá trình chông gai những kết quả nhận được sẽ rất xứng đáng. Khoan dung với chính bản thân mình nghĩa là bạn tha thứ cho mình, cho những trải nghiệm tồi tệ đã xảy ra với chính mình.
+Khoan dung với chính mình còn là sự chấp nhận những cảm xúc bên trong chính con người mình, là khi chấp nhận sự mệt mỏi của bản thân sau một ngày dài nhưng không phán xét rằng sao mà mình lười thế.
+Từ bây giờ trở đi, khi gặp một vấn đề nào đó hãy để cảm xúc được "chảy", ở đây là "chảy" không phải "bùng nổ" trước khi có hành động tiếp theo. Hãy gọi tên cảm xúc rằng tôi đang tức giận, tôi đang khó chịu,...
+Và hơn hết, đối xử với bản thân chúng ta như chính chúng ta là.
             `
         },
         {
             title: "Cho phép tính cách thể hiện theo cách lành mạnh",
             text: `
             Cho phép những phần tính cách bên trong tiềm thức được bộc lộ một cách lành mạnh cũng là đang hướng đến việc chữa lành
-Viết nhật ký: 
+Viết nhật ký.
 Dành 5 phút mỗi ngày viết ra suy nghĩ, cảm xúc, sự kiện,... trong ngày của bản thân giúp ta không chỉ nhận diện được chúng mà còn điều hướng những điều tiêu cực đi đến một giải pháp tốt hơn.
+Thực hành chánh niệm.
+Chúng ta không thể chối bỏ những cảm xúc của chính bản thân mình. Thay vào đó, việc học cách chấp nhận nó mà không phán xét sẽ giúp cảm xúc tiêu cực đi qua một cách triệt để.
+Ví dụ, sau một trải nghiệm không mấy tốt đẹp tại chốn công sở, trường học,... việc nhìn nhận bản thân là điều cần thiết nhưng phải dưới góc nhìn không phán xét, không cưỡng ép và nhìn nhận bản thân chúng ta theo hướng tốt đẹp.
+Hơn hết, hãy để cảm xúc được giải tỏa trước khi bạn nhìn nhận chính bản thân mình.
             `
         }
     ]
@@ -780,4 +838,3 @@ loadQuestion();
 </script>
 </body>
 </html>
-
