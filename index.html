@@ -108,6 +108,18 @@ button:hover {
     border-radius: 8px;
     border: 1px solid #fab1a0;
 }
+
+.solution-title {
+    font-weight: bold;
+    margin-top: 15px;
+    color: #27ae60;
+}
+
+.solution-text {
+    margin-left: 10px;
+    white-space: pre-line;
+    line-height: 1.6;
+}
 </style>
 </head>
 
@@ -268,8 +280,8 @@ const questions = [
     answers: [
         {
             text: "Đồng ý", 
-            score: 0,
-            tyle: ["secure"]
+            score: 1,
+            type: ["secure"]
         },
         {
             text: "Trung lập", 
@@ -316,8 +328,8 @@ const questions = [
         },
         {
             text: "Không đồng ý", 
-            score: 0,
-            tyle: ["secure"]
+            score: 1,
+            type: ["secure"]
         }
     ]
 },
@@ -335,9 +347,9 @@ const questions = [
             type: ["anxious"]
         },
         {
-            ext: "Không đồng ý", 
-            score: 0,
-            tyle: ["secure"]
+            text: "Không đồng ý", 
+            score: 1,
+            type: ["secure"]
         }
     ]
 },
@@ -382,8 +394,8 @@ const questions = [
     answers: [
         {
             text: "Đồng ý", 
-            score: 0,
-            tyle: ["secure"]
+            score: 1,
+            type: ["secure"]
         },
         {
             text: "Trung lập", 
@@ -475,8 +487,8 @@ const questions = [
     answers: [
         {
             text: "Đồng ý", 
-            score: 0,
-            tyle: ["secure"]
+            score: 1,
+            type: ["secure"]
 
         },
         {
@@ -496,8 +508,8 @@ const questions = [
     answers: [
         {
             text: "Đồng ý", 
-            score: 0,
-            tyle: ["secure"]
+            score: 1,
+            type: ["secure"]
         },
         {
             text: "Trung lập", 
@@ -642,8 +654,7 @@ const attachmentSolutions = {
         {
             title: "Bạn có nền tảng gắn bó khá ổn định.",
             text: `
-            Hãy tiếp tục duy trì sự cân bằng giữa độc lập và gắn kết,
-            đồng thời lắng nghe cảm xúc của bản thân và người khác.
+            Hãy tiếp tục duy trì sự cân bằng giữa độc lập và gắn kết, đồng thời lắng nghe cảm xúc của bản thân và người khác.
             `
         }
     ],
@@ -652,28 +663,21 @@ const attachmentSolutions = {
         {
             title: "Thừa nhận tính cách",
             text: `
-            Thừa nhận rằng bạn cảm thấy lo âu khi trò chuyện hoặc thân mật với bố mẹ/người nuôi dưỡng. 
-            Chấp nhận rằng bản thân bạn thật sự chưa cảm thấy sự an toàn nhưng không tìm kiếm sự an toàn một cách mù quáng. 
-            Việc thừa nhận này là bước đầu của chữa lành.
+            Thừa nhận rằng bạn cảm thấy lo âu khi trò chuyện hoặc thân mật với bố mẹ/người nuôi dưỡng. Chấp nhận rằng bản thân bạn thật sự chưa cảm thấy sự an toàn nhưng không tìm kiếm sự an toàn một cách mù quáng. Việc thừa nhận này là bước đầu của chữa lành.
             `
         },
         {
             title: "Hồi tưởng trải nghiệm gốc",
             text: `
-            Hồi tưởng nội tâm bằng cách nhớ về những điều bố mẹ/người nuôi dưỡng đã từng gây tổn thương cho bạn, 
-            những kỷ niệm không mấy tốt đẹp cùng bố mẹ khiến bạn lo lắng, 
-            sợ hãi khi đối diện với họ, 
-            từ đó tìm ra nguyên nhân thật sự khiến bạn cảm thấy lo sợ nhưng vẫn muốn nhận được sự yêu thương từ họ.
+            Hồi tưởng nội tâm bằng cách nhớ về những điều bố mẹ/người nuôi dưỡng đã từng gây tổn thương cho bạn, những kỷ niệm không mấy tốt đẹp cùng bố mẹ khiến bạn lo lắng, sợ hãi khi đối diện với họ, từ đó tìm ra nguyên nhân thật sự khiến bạn cảm thấy lo sợ nhưng vẫn muốn nhận được sự yêu thương từ họ.
             `
         },
         {
             title: "Cho phép tính cách xuất hiện",
             text: `
-            Cho phép những tính cách như lo âu, sợ hãi, sợ bị bỏ rơi,... được xuất hiện. 
-            Nghĩa là bạn cần bày tỏ những phần tính cách ấy cho bố mẹ/người nuôi dưỡng hoặc cho chính mình.
+            Cho phép những tính cách như lo âu, sợ hãi, sợ bị bỏ rơi,... được xuất hiện. Nghĩa là bạn cần bày tỏ những phần tính cách ấy cho bố mẹ/người nuôi dưỡng hoặc cho chính mình.
 Trò chuyện với bản thân thường xuyên: 
-Mỗi ngày dành ra một khoảng thời gian 5 đến 10 phút chuyện trò với bản thân. Nếu bạn gặp khó khăn hãy đặt đồng hồ báo thức và ngồi yên không làm gì cả, không thiết bị điện thoại, không tiếng ồn, một nơi yên tĩnh và đặt hẹn giờ trong 5 phút. 
-Điều này sẽ đánh thức tâm trí bạn. Khi đã làm được, hãy dành một khung giờ trong ngày để trò chuyện với chính bản thân mình.
+Mỗi ngày dành ra một khoảng thời gian 5 đến 10 phút chuyện trò với bản thân. Nếu bạn gặp khó khăn hãy đặt đồng hồ báo thức và ngồi yên không làm gì cả, không thiết bị điện thoại, không tiếng ồn, một nơi yên tĩnh và đặt hẹn giờ trong 5 phút. Điều này sẽ đánh thức tâm trí bạn. Khi đã làm được, hãy dành một khung giờ trong ngày để trò chuyện với chính bản thân mình.
 Nói cho bố mẹ/người nuôi dưỡng hoặc những người quan trọng có khả năng lắng nghe bạn biết được cảm nghĩ của bạn: 
 Việc nói ra suy nghĩ, cảm xúc của mình không chỉ giúp chúng ta giải tỏa được căng thẳng mà còn nâng cao khả năng kiểm soát cảm xúc, giúp tâm trạng ổn định hơn.
             `
@@ -694,15 +698,13 @@ Việc này sẽ khiến bạn chìm đắm trong thế giới của riêng mìn
         {
             title: "Thừa nhận tính cách",
             text: `
-            Thừa nhận rằng bạn có xu hướng né tránh khi trò chuyện hoặc thân mật với bố mẹ/người nuôi dưỡng.
-            Việc bạn giữ khoảng cách cảm xúc cũng là một cách tự bảo vệ bản thân.
+            Thừa nhận rằng bạn có xu hướng né tránh khi trò chuyện hoặc thân mật với bố mẹ/người nuôi dưỡng. Việc giữ khoảng cách cảm xúc cũng là một cách tự bảo vệ bản thân.
             `
         },
         {
             title: "Hồi tưởng trải nghiệm gốc",
             text: `
-           Hồi tưởng nội tâm bằng cách nhớ về những điều bố mẹ/người nuôi dưỡng làm tổn thương bạn khiến bạn hành xử khác đi. 
-           Ví dụ, thời thơ ấu khi bạn nhờ họ giúp một việc nhỏ nhưng họ không giúp và bạn học được rằng việc tự lập là điều cần thiết.
+           Hồi tưởng nội tâm bằng cách nhớ về những điều bố mẹ/người nuôi dưỡng làm tổn thương bạn khiến bạn hành xử khác đi. Ví dụ, thời thơ ấu khi bạn nhờ họ giúp một việc nhỏ nhưng họ không giúp và bạn học được rằng việc tự lập là điều cần thiết.
             `
         },
         {
@@ -710,12 +712,9 @@ Việc này sẽ khiến bạn chìm đắm trong thế giới của riêng mìn
             text: `
             Cho phép những tính cách như e ngại, nỗi sợ thân mật,... được xuất hiện. Nghĩa là bạn cần bày tỏ những phần tính cách ấy cho bố mẹ/người nuôi dưỡng hoặc cho chính mình.
 Trò chuyện với bản thân thường xuyên:
-Mỗi ngày dành ra một khoảng thời gian 5 đến 10 phút chuyện trò với bản thân. Nếu bạn gặp khó khăn hãy đặt đồng hồ báo thức và ngồi yên không làm gì cả, không thiết bị điện thoại, không tiếng ồn, một nơi yên tĩnh và đặt hẹn giờ trong 5 phút. 
-Điều này sẽ đánh thức tâm trí bạn. 
-Khi đã làm được, hãy dành một khung giờ trong ngày để trò chuyện với chính bản thân mình.
+Mỗi ngày dành ra một khoảng thời gian 5 đến 10 phút chuyện trò với bản thân. Nếu bạn gặp khó khăn hãy đặt đồng hồ báo thức và ngồi yên không làm gì cả, không thiết bị điện thoại, không tiếng ồn, một nơi yên tĩnh và đặt hẹn giờ trong 5 phút. Điều này sẽ đánh thức tâm trí bạn. Khi đã làm được, hãy dành một khung giờ trong ngày để trò chuyện với chính bản thân mình.
 Học cách mở lòng: 
-Dành ra một khoảng thời gian trong ngày cùng bố mẹ/người nuôi dưỡng hoặc những người quan trọng với bạn để trò chuyện cũng như hiểu hơn về họ. 
-Nếu gặp khó khăn, hãy bày tỏ cảm xúc sâu kín của bạn với những đồ vật bạn yêu thích (gấu bông, tượng heo đất,...) rồi sau đó hãy bày tỏ những điều đó với bố mẹ/người nuôi dưỡng.
+Dành ra một khoảng thời gian trong ngày cùng bố mẹ/người nuôi dưỡng hoặc những người quan trọng với bạn để trò chuyện cũng như hiểu hơn về họ. Nếu gặp khó khăn, hãy bày tỏ cảm xúc sâu kín của bạn với những đồ vật bạn yêu thích (gấu bông, tượng heo đất,...) rồi sau đó hãy bày tỏ những điều đó với bố mẹ/người nuôi dưỡng.
             `
         },
         {
@@ -734,8 +733,7 @@ Khi đủ khả năng gắn kết, việc cùng bố mẹ/người nuôi dưỡn
         {
             title: "Thừa nhận tính cách",
             text: `
-            Thừa nhận rằng bạn gặp mâu thuẫn trong việc muốn được thân mật nhưng lại sợ bị tổn thương khi đối diện với bố mẹ/người nuôi dưỡng. 
-            Việc nhận diện mâu thuẫn này là bước đầu để hướng đến việc chữa lành.
+            Thừa nhận rằng bạn gặp mâu thuẫn trong việc muốn được thân mật nhưng lại sợ bị tổn thương khi đối diện với bố mẹ/người nuôi dưỡng. Việc nhận diện mâu thuẫn này là bước đầu để hướng đến việc chữa lành.
             `
         },
         {
@@ -748,27 +746,20 @@ Khi đủ khả năng gắn kết, việc cùng bố mẹ/người nuôi dưỡn
             title: "Cho phép tính cách xuất hiện",
             text: `
             Cho phép những tính cách như nhút nhát, sợ sệt, khao khát sự thân mật,... được xuất hiện. Nghĩa là bạn cần bày tỏ những phần tính cách ấy cho bố mẹ/người nuôi dưỡng hoặc cho chính mình.
-Trò chuyện với bản thân thường xuyên.
-Mỗi ngày dành ra một khoảng thời gian 5 đến 10 phút chuyện trò với bản thân. Nếu bạn gặp khó khăn hãy đặt đồng hồ báo thức và ngồi yên không làm gì cả, không thiết bị điện thoại, không tiếng ồn, một nơi yên tĩnh và đặt hẹn giờ trong 5 phút. 
-Điều này sẽ đánh thức tâm trí bạn. 
-Khi đã làm được, hãy dành một khung giờ trong ngày để trò chuyện với chính bản thân mình.
-Học cách đối xử tốt với chính mình khi những cảm xúc sâu trong tiềm thức.
-Học cách khoan dung với chính mình là một quá trình chông gai những kết quả nhận được sẽ rất xứng đáng. Khoan dung với chính bản thân mình nghĩa là bạn tha thứ cho mình, cho những trải nghiệm tồi tệ đã xảy ra với chính mình.
-Khoan dung với chính mình còn là sự chấp nhận những cảm xúc bên trong chính con người mình, là khi chấp nhận sự mệt mỏi của bản thân sau một ngày dài nhưng không phán xét rằng sao mà mình lười thế.
-Từ bây giờ trở đi, khi gặp một vấn đề nào đó hãy để cảm xúc được "chảy", ở đây là "chảy" không phải "bùng nổ" trước khi có hành động tiếp theo. Hãy gọi tên cảm xúc rằng tôi đang tức giận, tôi đang khó chịu,...
-Và hơn hết, đối xử với bản thân chúng ta như chính chúng ta là.
+Trò chuyện với bản thân thường xuyên:
+Mỗi ngày dành ra một khoảng thời gian 5 đến 10 phút chuyện trò với bản thân. Nếu bạn gặp khó khăn hãy đặt đồng hồ báo thức và ngồi yên không làm gì cả, không thiết bị điện thoại, không tiếng ồn, một nơi yên tĩnh và đặt hẹn giờ trong 5 phút. Điều này sẽ đánh thức tâm trí bạn. Khi đã làm được, hãy dành một khung giờ trong ngày để trò chuyện với chính bản thân mình.
+Học cách đối xử tốt với chính mình khi những cảm xúc sâu trong tiềm thức:
+Học cách khoan dung với chính mình là một quá trình chông gai những kết quả nhận được sẽ rất xứng đáng. Khoan dung với chính bản thân mình nghĩa là bạn tha thứ cho mình, cho những trải nghiệm tồi tệ đã xảy ra với chính mình. Khoan dung với chính mình còn là sự chấp nhận những cảm xúc bên trong chính con người mình, là khi chấp nhận sự mệt mỏi của bản thân sau một ngày dài nhưng không phán xét rằng sao mà mình lười thế. Từ bây giờ trở đi, khi gặp một vấn đề nào đó hãy để cảm xúc được "chảy", ở đây là "chảy" không phải "bùng nổ" trước khi có hành động tiếp theo. Hãy gọi tên cảm xúc rằng tôi đang tức giận, tôi đang khó chịu,... Và hơn hết, đối xử với bản thân chúng ta như chính chúng ta là.
             `
         },
         {
             title: "Cho phép tính cách thể hiện theo cách lành mạnh",
             text: `
             Cho phép những phần tính cách bên trong tiềm thức được bộc lộ một cách lành mạnh cũng là đang hướng đến việc chữa lành
-Viết nhật ký.
+Viết nhật ký:
 Dành 5 phút mỗi ngày viết ra suy nghĩ, cảm xúc, sự kiện,... trong ngày của bản thân giúp ta không chỉ nhận diện được chúng mà còn điều hướng những điều tiêu cực đi đến một giải pháp tốt hơn.
-Thực hành chánh niệm.
-Chúng ta không thể chối bỏ những cảm xúc của chính bản thân mình. Thay vào đó, việc học cách chấp nhận nó mà không phán xét sẽ giúp cảm xúc tiêu cực đi qua một cách triệt để.
-Ví dụ, sau một trải nghiệm không mấy tốt đẹp tại chốn công sở, trường học,... việc nhìn nhận bản thân là điều cần thiết nhưng phải dưới góc nhìn không phán xét, không cưỡng ép và nhìn nhận bản thân chúng ta theo hướng tốt đẹp.
-Hơn hết, hãy để cảm xúc được giải tỏa trước khi bạn nhìn nhận chính bản thân mình.
+Thực hành chánh niệm:
+Chúng ta không thể chối bỏ những cảm xúc của chính bản thân mình. Thay vào đó, việc học cách chấp nhận nó mà không phán xét sẽ giúp cảm xúc tiêu cực đi qua một cách triệt để. Ví dụ, sau một trải nghiệm không mấy tốt đẹp tại chốn công sở, trường học,... việc nhìn nhận bản thân là điều cần thiết nhưng phải dưới góc nhìn không phán xét, không cưỡng ép và nhìn nhận bản thân chúng ta theo hướng tốt đẹp. Hơn hết, hãy để cảm xúc được giải tỏa trước khi bạn nhìn nhận chính bản thân mình.
             `
         }
     ]
